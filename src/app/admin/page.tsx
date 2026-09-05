@@ -34,18 +34,10 @@ export default function AdminPage() {
 
   const load = async () => {
     setLoading(true);
-    try {
-      const [r1, r2, r3] = await Promise.all([
-        fetch("/api/project-request").then((r) => r.json()).catch(() => ({ data: [] })),
-        fetch("/api/contact").then((r) => r.json()).catch(() => ({ data: [] })),
-        fetch("/api/projects").then((r) => r.json()).catch(() => ({ data: [] })),
-      ]);
-      setRequests(r1.data || []);
-      setMsgs(r2.data || []);
-      setProjs(r3.data || []);
-    } finally {
-      setLoading(false);
-    }
+    setRequests(JSON.parse(localStorage.getItem("cc-project-requests") || "[]"));
+    setMsgs(JSON.parse(localStorage.getItem("cc-messages") || "[]"));
+    setProjs(JSON.parse(localStorage.getItem("cc-projects") || "[]"));
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -54,22 +46,12 @@ export default function AdminPage() {
 
   const createProject = async (e: React.FormEvent) => {
     e.preventDefault();
-    setNotice("Creating...");
-    try {
-      const r = await fetch("/api/projects", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, technologies: ["Next.js"], color: "#D4FF3F", year: form.year }),
-      });
-      const j = await r.json();
-      if (j.ok) {
-        setNotice("Project created ✓");
-        setForm({ title: "", slug: "", category: "Web Application", tagline: "", client: "", year: "2026", description: "" });
-        load();
-      } else setNotice(j.error || "Failed");
-    } catch {
-      setNotice("Network error");
-    }
+    const projects = JSON.parse(localStorage.getItem("cc-projects") || "[]");
+    const project = { ...form, id: Date.now(), technologies: ["Next.js"], color: "#D4FF3F" };
+    localStorage.setItem("cc-projects", JSON.stringify([...projects, project]));
+    setNotice("Project created");
+    setForm({ title: "", slug: "", category: "Web Application", tagline: "", client: "", year: "2026", description: "" });
+    load();
   };
 
   if (!authed) {

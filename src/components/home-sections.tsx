@@ -817,29 +817,15 @@ export function ContactSection() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  const submit = async (e: React.FormEvent) => {
+  const submit = (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
     setMessage("");
-    try {
-      const r = await fetch("/api/project-request", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const j = await r.json();
-      if (j.ok) {
-        setStatus("done");
-        setMessage("Request received. We'll reply within 24 hours.");
-        setForm({ name: "", email: "", company: "", projectType: "Web Development", budget: "$5k — $10k", timeline: "1–2 months", description: "" });
-      } else {
-        setStatus("error");
-        setMessage(j.error || "Something went wrong.");
-      }
-    } catch {
-      setStatus("error");
-      setMessage("Network error. Email us directly.");
-    }
+    const requests = JSON.parse(localStorage.getItem("cc-project-requests") || "[]");
+    localStorage.setItem("cc-project-requests", JSON.stringify([...requests, { ...form, createdAt: new Date().toISOString() }]));
+    setStatus("done");
+    setMessage("Request saved. We'll reply within 24 hours.");
+    setForm({ name: "", email: "", company: "", projectType: "Web Development", budget: "$5k — $10k", timeline: "1–2 months", description: "" });
   };
 
   const inputCls =

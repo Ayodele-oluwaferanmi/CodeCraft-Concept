@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Hero3D from "./hero3d";
 import { Preloader } from "./chrome";
 import {
@@ -18,6 +18,12 @@ import {
 
 export default function HomeClient({ projects }: { projects: HomeProject[] }) {
   const [loaded, setLoaded] = useState(false);
+  const [visibleProjects, setVisibleProjects] = useState(projects);
+
+  useEffect(() => {
+    const localProjects = JSON.parse(localStorage.getItem("cc-projects") || "[]") as HomeProject[];
+    if (localProjects.length) setVisibleProjects([...projects, ...localProjects]);
+  }, [projects]);
 
   return (
     <>
@@ -31,7 +37,7 @@ export default function HomeClient({ projects }: { projects: HomeProject[] }) {
 
         <BrandStatement />
         <ServicesExperience />
-        <SelectedWork projects={projects} />
+        <SelectedWork projects={visibleProjects} />
         <Process />
         <TechEcosystem />
         <AboutTeaser />

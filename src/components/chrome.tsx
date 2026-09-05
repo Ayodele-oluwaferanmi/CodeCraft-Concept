@@ -387,21 +387,14 @@ export function Reveal({
 export function Footer() {
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
-  const submit = async (e: React.FormEvent) => {
+  const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    setMsg("...");
-    try {
-      const r = await fetch("/api/newsletter", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const j = await r.json();
-      setMsg(j.ok ? "You're in. Welcome to the craft." : j.error || "Error");
-      if (j.ok) setEmail("");
-    } catch {
-      setMsg("Network error");
+    const subscribers = JSON.parse(localStorage.getItem("cc-newsletter") || "[]");
+    if (!subscribers.includes(email.toLowerCase())) {
+      localStorage.setItem("cc-newsletter", JSON.stringify([...subscribers, email.toLowerCase()]));
     }
+    setMsg("You're in. Welcome to the craft.");
+    setEmail("");
   };
   return (
     <footer className="relative overflow-hidden border-t border-white/10 bg-[#08080A]">

@@ -1,13 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
-import { db } from "@/db";
-import { projects } from "@/db/schema";
-import { eq } from "drizzle-orm";
 import { FALLBACK_PROJECTS } from "@/lib/content";
 import { Reveal } from "@/components/chrome";
-
-export const dynamic = "force-dynamic";
 
 type FullProject = {
   title: string; slug: string; category: string;
@@ -20,22 +15,12 @@ type FullProject = {
 };
 
 async function getProject(slug: string): Promise<FullProject | null> {
-  try {
-    const rows = await db.select().from(projects).where(eq(projects.slug, slug)).limit(1);
-    if (rows.length) return rows[0] as unknown as FullProject;
-  } catch {}
   const fb = (FALLBACK_PROJECTS as unknown as FullProject[]).find((p) => p.slug === slug);
   return fb || null;
 }
 
 async function getNext(slug: string): Promise<FullProject | null> {
-  const all = (await (async () => {
-    try {
-      const rows = await db.select().from(projects).where(eq(projects.status, "published"));
-      if (rows.length) return rows as unknown as FullProject[];
-    } catch {}
-    return FALLBACK_PROJECTS as unknown as FullProject[];
-  })());
+  const all = FALLBACK_PROJECTS as unknown as FullProject[];
   const idx = all.findIndex((p) => p.slug === slug);
   if (idx === -1) return null;
   return all[(idx + 1) % all.length];

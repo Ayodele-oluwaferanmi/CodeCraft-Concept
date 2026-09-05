@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/chrome";
 
@@ -20,13 +20,20 @@ const FILTERS = ["All", "Web Application", "E-Commerce", "SaaS Platform", "Digit
 
 export default function WorkClient({ projects }: { projects: P[] }) {
   const [filter, setFilter] = useState("All");
-  const list = filter === "All" ? projects : projects.filter((p) => p.category === filter);
+  const [visibleProjects, setVisibleProjects] = useState(projects);
+
+  useEffect(() => {
+    const localProjects = JSON.parse(localStorage.getItem("cc-projects") || "[]") as P[];
+    if (localProjects.length) setVisibleProjects([...projects, ...localProjects]);
+  }, [projects]);
+
+  const list = filter === "All" ? visibleProjects : visibleProjects.filter((p) => p.category === filter);
 
   return (
     <main className="bg-[#060607] pt-[72px]">
       <div className="mx-auto max-w-[1440px] px-5 pb-20 pt-14 md:px-10 md:pt-20">
         <Reveal>
-          <p className="font-mono text-xs tracking-[0.35em] text-[#D4FF3F]">( SELECTED WORK — {projects.length} )</p>
+          <p className="font-mono text-xs tracking-[0.35em] text-[#D4FF3F]">( SELECTED WORK — {visibleProjects.length} )</p>
           <h1 className="mt-4 font-display text-[13vw] font-black leading-[0.9] tracking-tight md:text-[7vw]">
             WORK THAT
             <br />

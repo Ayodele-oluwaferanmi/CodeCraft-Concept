@@ -10,28 +10,14 @@ export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [msg, setMsg] = useState("");
 
-  const submitMini = async (e: React.FormEvent) => {
+  const submitMini = (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
-    try {
-      const r = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(mini),
-      });
-      const j = await r.json();
-      if (j.ok) {
-        setStatus("done");
-        setMsg("Message sent. Talk soon.");
-        setMini({ name: "", email: "", message: "" });
-      } else {
-        setStatus("error");
-        setMsg(j.error || "Error");
-      }
-    } catch {
-      setStatus("error");
-      setMsg("Network error");
-    }
+    const messages = JSON.parse(localStorage.getItem("cc-messages") || "[]");
+    localStorage.setItem("cc-messages", JSON.stringify([...messages, { ...mini, createdAt: new Date().toISOString() }]));
+    setStatus("done");
+    setMsg("Message saved. Talk soon.");
+    setMini({ name: "", email: "", message: "" });
   };
 
   return (
