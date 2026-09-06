@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
@@ -30,6 +31,7 @@ export type HomeProject = {
   year?: string | null;
   color?: string | null;
   stats?: { label: string; value: string }[] | null;
+  thumbnail?: string | null;
 };
 
 /* ============ HERO CONTENT ============ */
@@ -459,6 +461,16 @@ export function SelectedWork({ projects }: { projects: HomeProject[] }) {
                       background: `linear-gradient(135deg, #121214, ${p.color || "#D4FF3F"}22)`,
                     }}
                   >
+                    {p.thumbnail && (
+                      <Image
+                        src={p.thumbnail}
+                        alt={`${p.title} project preview`}
+                        fill
+                        className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105"
+                        sizes="(min-width: 768px) 18rem, 100vw"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-black/20" />
                     <div className="absolute inset-0 grid place-items-center">
                       <span className="font-display text-6xl font-black text-white/10 transition-all duration-500 group-hover:text-white/20 group-hover:scale-110">
                         {String(i + 1).padStart(2, "0")}
@@ -854,9 +866,9 @@ export function ContactSection() {
             </Reveal>
             <div className="mt-8 space-y-3">
               {[
-                ["EMAIL", "hello@codecraft.concept"],
-                ["WHATSAPP", "+1 (555) 010-2030"],
-                ["PHONE", "+1 (555) 010-2030"],
+                ["EMAIL", "bdev.codecraft@gmail.com"],
+                ["WHATSAPP", "+2347036260672"],
+                ["PHONE", "+2347036260672"],
               ].map(([k, v]) => (
                 <div key={k} className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-5 py-4">
                   <span className="font-mono text-[11px] tracking-[0.3em] text-white/40">{k}</span>

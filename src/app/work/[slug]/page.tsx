@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { FALLBACK_PROJECTS } from "@/lib/content";
@@ -12,6 +13,8 @@ type FullProject = {
   technologies?: string[] | null; client?: string | null; year?: string | null;
   color?: string | null; timeline?: string | null;
   stats?: { label: string; value: string }[] | null;
+  heroImage?: string | null;
+  websiteUrl?: string | null;
 };
 
 async function getProject(slug: string): Promise<FullProject | null> {
@@ -65,12 +68,33 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
               <span key={t} className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-[13px] text-white/70">{t}</span>
             ))}
           </div>
+          {p.websiteUrl && (
+            <a
+              href={p.websiteUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-black text-black transition-transform hover:-translate-y-0.5"
+            >
+              VISIT SITE <ArrowUpRight size={17} />
+            </a>
+          )}
           {/* hero visual */}
           <div className="relative mt-10 overflow-hidden rounded-3xl border border-white/10" style={{ background: `linear-gradient(135deg, #101014, ${color}1F)` }}>
-            <div className="grid place-items-center px-6 py-20 md:py-28">
-              <span className="font-display text-[22vw] font-black leading-none text-white/[0.07] md:text-[10rem]">{p.title?.slice(0, 2).toUpperCase()}</span>
-              <p className="mt-2 max-w-xl text-center font-mono text-xs tracking-[0.3em] text-white/40">FINAL PRODUCT — LIVE & MEASURABLE</p>
-            </div>
+            {p.heroImage ? (
+              <Image
+                src={p.heroImage}
+                alt={`${p.title} project preview`}
+                width={1600}
+                height={900}
+                className="relative max-h-[620px] w-full object-cover"
+                priority
+              />
+            ) : (
+              <div className="grid place-items-center px-6 py-20 md:py-28">
+                <span className="font-display text-[22vw] font-black leading-none text-white/[0.07] md:text-[10rem]">{p.title?.slice(0, 2).toUpperCase()}</span>
+                <p className="mt-2 max-w-xl text-center font-mono text-xs tracking-[0.3em] text-white/40">FINAL PRODUCT — LIVE & MEASURABLE</p>
+              </div>
+            )}
             <div className="absolute -bottom-16 left-1/2 h-48 w-[600px] -translate-x-1/2 rounded-full blur-[80px]" style={{ background: `${color}55` }} />
           </div>
         </div>

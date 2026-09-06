@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/chrome";
@@ -12,6 +13,7 @@ type P = {
   tagline?: string | null;
   client?: string | null;
   year?: string | null;
+  thumbnail?: string | null;
   color?: string | null;
   technologies?: string[] | null;
 };
@@ -72,6 +74,16 @@ export default function WorkClient({ projects }: { projects: P[] }) {
                   className="relative h-64 overflow-hidden md:h-72"
                   style={{ background: `linear-gradient(135deg, #141417, ${p.color || "#D4FF3F"}26)` }}
                 >
+                  {p.thumbnail && (
+                    <Image
+                      src={p.thumbnail}
+                      alt={`${p.title} project preview`}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-black/20" />
                   <div className="absolute inset-0 grid place-items-center">
                     <span className="font-display text-[7rem] font-black text-white/[0.07] transition-all duration-500 group-hover:scale-110 group-hover:text-white/[0.12]">
                       {String(i + 1).padStart(2, "0")}
