@@ -54,7 +54,7 @@ export default function ContactPage() {
               <h2 className="mt-3 font-display text-3xl font-black md:text-4xl">SCROLL DOWN FOR THE FULL PROJECT REQUEST FORM ↓</h2>
               <p className="mt-4 text-white/60">Budgets, timelines, project types — everything we need to quote accurately in one go.</p>
               <div className="mt-6 space-y-2 font-mono text-xs text-white/40">
-                <p>EMAIL — hello@codecraft.concept</p>
+                <p>EMAIL — bdev.codecraft@gmail.com</p>
                 <p>RESPONSE — under 24h on weekdays</p>
               </div>
             </div>

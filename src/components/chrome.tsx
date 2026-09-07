@@ -316,10 +316,10 @@ export function Navbar() {
                   NEW BUSINESS
                 </p>
                 <a
-                  href="mailto:hello@codecraft.concept"
+                  href="mailto:bdev.codecraft@gmail.com"
                   className="mt-2 block font-display text-xl font-bold hover:text-[#D4FF3F]"
                 >
-                  hello@codecraft.concept
+                  bdev.codecraft@gmail.com
                 </a>
                 <p className="mt-4 text-sm text-white/50">
                   Currently booking — 2 slots left for Q4 2026. Premium builds
@@ -461,8 +461,8 @@ export function Footer() {
               CONTACT
             </p>
             <div className="mt-4 space-y-2 text-sm text-white/70">
-              <p>hello@codecraft.concept</p>
-              <p>+1 (555) 010-2030</p>
+              <p>bdev.codecraft@gmail.com</p>
+              <p>+2347036260672</p>
               <p>WhatsApp — instant reply</p>
               <div className="flex gap-4 pt-2 text-xs font-bold tracking-widest text-white/40">
                 {["X", "IG", "LI", "DR"].map((s) => (
